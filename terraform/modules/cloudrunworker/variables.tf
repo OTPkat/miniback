@@ -1,0 +1,9 @@
+variable "location" {}
+variable "docker_image" {}
+variable "worker_name" {}
+variable "project" {}
+variable "db_user_name" {}
+variable "db_user_password_secret_id" {}
+variable "db_name" {}
+variable "sql_instance_connection_name" {}
+variable "service_account_name" {}

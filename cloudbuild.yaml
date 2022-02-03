@@ -1,0 +1,55 @@
+steps:
+
+- id: 'branch name'
+  name: 'alpine'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      echo "***********************"
+      echo "$BRANCH_NAME"
+      echo "***********************"
+
+- id: 'update gcr worker image'
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      PROJECT_ID=$(gcloud config list --format 'value(core.project)' 2>/dev/null)
+      gcloud builds submit --tag gcr.io/"${PROJECT_ID}"/fastgames_worker_image
+
+- id: 'tf init'
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      cd terraform/environments/$BRANCH_NAME/
+      terraform init
+
+
+# [START tf-plan]
+- id: 'tf plan'
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      cd terraform/environments/$BRANCH_NAME/
+      terraform plan
+
+# [END tf-plan]
+
+# [START tf-apply]
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      cd terraform/environments/$BRANCH_NAME/
+      terraform apply -auto-approve
+timeout: 3600s
+
+# [END tf-apply]
