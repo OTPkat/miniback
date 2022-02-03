@@ -26,6 +26,6 @@ class Duel(Base):
     challenged_choices = Column(String, nullable=True)
     challenged_get_pinged = Column(Boolean, nullable=True)
     done = Column(Boolean, nullable=True)
-    winner_discord_id = Column(Integer, nullable=True)
+    winner_discord_id = Column(BigInteger, nullable=True)
     is_draw = Column(Boolean, nullable=True)
 
