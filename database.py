@@ -30,7 +30,7 @@ try:
 except KeyError as e:
     sqlalchemy_database_url = "postgresql+asyncpg://localhost/test"
     engine = create_async_engine(sqlalchemy_database_url, echo=True)
-    session_local = sessionmaker(expire_oncommit=False, bind=engine, class_=AsyncSession)
+    session_local = sessionmaker(expire_on_commit=False, bind=engine, class_=AsyncSession)
 
 
 async def get_db():

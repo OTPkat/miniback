@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from v1.schemas.jajanken import Duelist, DuelCreate, Duel
+from v1.schemas.jajanken import Duelist, DuelCreate
 import models
 from sqlalchemy.future import select
 
@@ -60,6 +60,6 @@ class DuelistDao:
 
     @staticmethod
     async def get_duels(db: Session):
-        duels = await db.execute(select(models.Duels))
+        duels = await db.execute(select(models.Duel))
         return duels.scalars().all()
 

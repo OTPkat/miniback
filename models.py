@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -6,7 +6,7 @@ Base = declarative_base()
 
 class Duelist(Base):
     __tablename__ = "duelists"
-    discord_user_id = Column(Integer, primary_key=True, index=True)
+    discord_user_id = Column(BigInteger, primary_key=True, index=True)
     availability = Column(Boolean)
     name = Column(String)
     message_id = Column(Integer, nullable=True)
