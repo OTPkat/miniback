@@ -66,14 +66,14 @@ class DuelistDao:
 
     @classmethod
     async def post_duelist(cls, db: Session, duelist: Duelist):
-        duelist = await cls.get_duelist(db=db, discord_user_id=duelist.discord_user_id)
-        if duelist:
-            duelist = (
+        duelist_ = await cls.get_duelist(db=db, discord_user_id=duelist.discord_user_id)
+        if duelist_:
+            duelist_update = (
                 update(models.Duelist).where(models.Duelist.discord_user_id == duelist.discord_user_id).values(**duelist.dict())
             ).execution_options(synchronize_session="fetch")
-            await db.execute(duelist)
+            await db.execute(duelist_update)
             await db.commit()
-            return duelist
+            return duelist_
         else:
             duelist = await cls.insert_duelist(db=db,duelist=duelist)
             return duelist
