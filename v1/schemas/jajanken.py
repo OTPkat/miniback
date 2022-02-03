@@ -6,7 +6,7 @@ class Duelist(BaseModel):
     discord_user_id: int
     availability: bool
     name: str
-    message_id: Optional[int]
+    message_id: Optional[str]
     n_win: Optional[int] = 0
     n_loss: Optional[int] = 0
     n_draw: Optional[int] = 0
