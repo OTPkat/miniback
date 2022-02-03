@@ -37,8 +37,8 @@ async def get_duelists(
 async def get_duelist(
     discord_user_id: int, db: Session = Depends(get_db)
 ):
-    duelists = await DuelistDao.get_duelist(db=db, discord_user_id=discord_user_id)
-    return duelists
+    duelist = await DuelistDao.get_duelist(db=db, discord_user_id=discord_user_id)
+    return duelist
 
 
 @app.get("/duelist_messages/{message_id}", response_model=Duelist)
