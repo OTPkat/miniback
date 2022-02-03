@@ -25,7 +25,7 @@ try:
         future=True,
         echo=True
     )
-    sessionlocal = sessionmaker(bind=engine, class_=AsyncSession,  expire_on_commit=False)
+    session_local = sessionmaker(bind=engine, class_=AsyncSession,  expire_on_commit=False)
 
 except KeyError as e:
     sqlalchemy_database_url = "postgresql+asyncpg://localhost/test"
