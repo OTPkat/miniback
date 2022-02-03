@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "spartan-theorem-328817-archivetf"
+    bucket = "spartan-theorem-328817-minigamestf"
     prefix = "env/dev"
   }
 required_providers {
