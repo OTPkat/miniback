@@ -9,7 +9,7 @@ class Duelist(Base):
     discord_user_id = Column(BigInteger, primary_key=True, index=True)
     availability = Column(Boolean)
     name = Column(String)
-    message_id = Column(Integer, nullable=True)
+    message_id = Column(BigInteger, nullable=True)
     n_win = Column(Integer)
     n_loss = Column(Integer)
     n_draw = Column(Integer)
@@ -18,8 +18,8 @@ class Duelist(Base):
 class Duel(Base):
     __tablename__ = "duels"
     id = Column(Integer, primary_key=True, index=True)
-    defier_id = Column(Integer)
-    challenged_id = Column(Integer)
+    defier_id = Column(BigInteger)
+    challenged_id = Column(BigInteger)
     n_choices = Column(Integer)
     defier_choices = Column(String, nullable=True)
     defier_get_pinged = Column(Boolean, nullable=True)
