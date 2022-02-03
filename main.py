@@ -47,3 +47,19 @@ async def get_duelist_by_message_id(
 ):
     duelist = await DuelistDao.get_duelist_by_message_id(db=db, message_id=message_id)
     return duelist
+
+
+@app.post("/duels/", response_model=Duel)
+async def post_duel(
+    duel: DuelCreate, db: Session = Depends(get_db)
+):
+    duelist = await DuelistDao.insert_duel(db=db, duel=duel)
+    return duelist
+
+
+@app.get("/duels/", response_model=List[Duel])
+async def get_duels(
+    db: Session = Depends(get_db)
+):
+    duels = await DuelistDao.get_duels(db=db)
+    return duels
