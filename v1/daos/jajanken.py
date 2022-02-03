@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from v1.schemas.jajanken import Duelist, DuelCreate
 import models
 from sqlalchemy.future import select
+from sqlalchemy import update
 
 
 class DuelistDao:
@@ -62,4 +63,18 @@ class DuelistDao:
     async def get_duels(db: Session):
         duels = await db.execute(select(models.Duel))
         return duels.scalars().all()
+
+    @classmethod
+    async def put_duelist(cls, db: Session, duelist: Duelist):
+        job_to_return = await cls.get_duelist(db=db, discord_user_id=duelist.discord_user_id)
+        if job_to_return:
+            job_to_update = (
+                update(models.Duelist).where(models.Duelist.discord_user_id == duelist.discord_user_id).values(**duelist.dict())
+            ).execution_options(synchronize_session="fetch")
+            await db.execute(job_to_update)
+            await db.commit()
+            return job_to_return
+        else:
+            job_to_return = await cls.insert_duelist(db=db,duelist=duelist)
+            return job_to_return
 

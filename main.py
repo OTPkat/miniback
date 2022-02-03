@@ -41,6 +41,14 @@ async def get_duelist(
     return duelist
 
 
+@app.put("/duelists/", response_model=Duelist)
+async def put_duelist(
+    duelist: Duelist, db: Session = Depends(get_db)
+):
+    duelist = await DuelistDao.put_duelist(db=db, duelist=duelist)
+    return duelist
+
+
 @app.get("/duelist_messages/{message_id}", response_model=Duelist)
 async def get_duelist_by_message_id(
     message_id: int, db: Session = Depends(get_db),
