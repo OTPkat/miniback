@@ -1,0 +1,31 @@
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+
+class Duelist(Base):
+    __tablename__ = "duelists"
+    discord_user_id = Column(Integer, primary_key=True, index=True)
+    availability = Column(Boolean)
+    name = Column(String)
+    message_id = Column(Integer, nullable=True)
+    n_win = Column(Integer)
+    n_loss = Column(Integer)
+    n_draw = Column(Integer)
+
+
+class Duel(Base):
+    __tablename__ = "duels"
+    id = Column(Integer, primary_key=True, index=True)
+    defier_id = Column(Integer)
+    challenged_id = Column(Integer)
+    n_choices = Column(Integer)
+    defier_choices = Column(String, nullable=True)
+    defier_get_pinged = Column(Boolean, nullable=True)
+    challenged_choices = Column(String, nullable=True)
+    challenged_get_pinged = Column(Boolean, nullable=True)
+    done = Column(Boolean, nullable=True)
+    winner_discord_id = Column(Integer, nullable=True)
+    is_draw = Column(Boolean, nullable=True)
+
