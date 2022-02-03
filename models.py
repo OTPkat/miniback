@@ -9,7 +9,7 @@ class Duelist(Base):
     discord_user_id = Column(BigInteger, primary_key=True, index=True)
     availability = Column(Boolean)
     name = Column(String)
-    message_id = Column(String, nullable=True)
+    message_id = Column(BigInteger, nullable=True)
     n_win = Column(Integer)
     n_loss = Column(Integer)
     n_draw = Column(Integer)
