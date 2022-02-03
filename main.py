@@ -33,7 +33,7 @@ async def get_duelists(
     return duelists
 
 
-@app.get("/duelist/", response_model=Duelist)
+@app.get("/duelist/{discord_user_id}", response_model=Duelist)
 async def get_duelist(
     discord_user_id: int, db: Session = Depends(get_db)
 ):
