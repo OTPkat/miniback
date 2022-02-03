@@ -21,7 +21,7 @@ async def startup():
 async def post_duelist(
     duelist: Duelist, db: Session = Depends(get_db)
 ):
-    duelist = await DuelistDao.insert_duelist(db=db, duelist=duelist)
+    duelist = await DuelistDao.post_duelist(db=db, duelist=duelist)
     return duelist
 
 
@@ -38,14 +38,6 @@ async def get_duelist(
     discord_user_id: int, db: Session = Depends(get_db)
 ):
     duelist = await DuelistDao.get_duelist(db=db, discord_user_id=discord_user_id)
-    return duelist
-
-
-@app.put("/duelists/", response_model=Duelist)
-async def put_duelist(
-    duelist: Duelist, db: Session = Depends(get_db)
-):
-    duelist = await DuelistDao.put_duelist(db=db, duelist=duelist)
     return duelist
 
 

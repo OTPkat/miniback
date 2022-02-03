@@ -65,16 +65,16 @@ class DuelistDao:
         return duels.scalars().all()
 
     @classmethod
-    async def put_duelist(cls, db: Session, duelist: Duelist):
-        job_to_return = await cls.get_duelist(db=db, discord_user_id=duelist.discord_user_id)
-        if job_to_return:
-            job_to_update = (
+    async def post_duelist(cls, db: Session, duelist: Duelist):
+        duelist = await cls.get_duelist(db=db, discord_user_id=duelist.discord_user_id)
+        if duelist:
+            duelist = (
                 update(models.Duelist).where(models.Duelist.discord_user_id == duelist.discord_user_id).values(**duelist.dict())
             ).execution_options(synchronize_session="fetch")
-            await db.execute(job_to_update)
+            await db.execute(duelist)
             await db.commit()
-            return job_to_return
+            return duelist
         else:
-            job_to_return = await cls.insert_duelist(db=db,duelist=duelist)
-            return job_to_return
+            duelist = await cls.insert_duelist(db=db,duelist=duelist)
+            return duelist
 
