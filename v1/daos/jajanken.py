@@ -34,10 +34,13 @@ class DuelistDao:
         return duelist
 
     @staticmethod
-    async def clear_duelists(db: Session):
-        nfts = await db.execute(select(models.Duelist))
-        for nft in nfts.scalars().all():
-            await db.delete(nft)
+    async def clear(db: Session):
+        duelists = await db.execute(select(models.Duelist))
+        matches = await db.execute(select(models.Duel))
+        for duelist in duelists.scalars().all():
+            await db.delete(duelist)
+        for match in matches.scalars().all():
+            await db.delete(match)
         await db.commit()
 
     @classmethod

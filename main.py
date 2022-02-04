@@ -27,6 +27,14 @@ async def post_duelist(
     return duelist
 
 
+@app.post("/clear_duelists/",)
+async def clear_duelists(
+    db: Session = Depends(get_db)
+):
+    await DuelistDao.clear(db=db)
+    return 1
+
+
 @app.get("/duelists/", response_model=List[Duelist])
 async def get_duelists(
     db: Session = Depends(get_db)
