@@ -94,10 +94,18 @@ async def get_players(
 
 
 @app.get("/player/{discord_user_id}", response_model=Player)
-async def get_duelist(
+async def get_player(
     discord_user_id: int, db: Session = Depends(get_db)
 ):
     player = await TournamentDao.get_player(db=db, discord_user_id=discord_user_id)
     return player
+
+
+@app.post("/clear_players/",)
+async def clear_players(
+    db: Session = Depends(get_db)
+):
+    await TournamentDao.clear(db=db)
+    return 1
 
 

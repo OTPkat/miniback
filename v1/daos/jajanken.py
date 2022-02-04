@@ -101,6 +101,13 @@ class TournamentDao:
         await db.refresh(player)
         return player
 
+    @staticmethod
+    async def clear(db: Session):
+        players = await db.execute(select(models.Player))
+        for player in players.scalars().all():
+            await db.delete(player)
+        await db.commit()
+
     @classmethod
     async def post_match(cls, db: Session, match: Match):
         player_1: Player = await cls.get_player(db=db, discord_user_id=match.player_1_discord_id)
