@@ -33,3 +33,30 @@ class Duel(DuelCreate):
 
     class Config:
         orm_mode = True
+
+
+class Player(BaseModel):
+    discord_user_id: int
+    name: str
+    n_win: Optional[int] = 0
+    n_loss: Optional[int] = 0
+    n_draw: Optional[int] = 0
+    get_pinged: Optional[bool] = False
+    n_revision: Optional[int] = 0
+    choices: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
+class Match(BaseModel):
+    player_1_discord_id: int
+    player_2_discord_id: int
+    player_1_choices: str
+    player_2_choices: str
+    player_1_get_pinged: bool
+    player_2_get_pinged: bool
+    is_draw: bool
+    player_1_revisions: int
+    player_2_revisions: int
+    winner_discord_id: Optional[int]

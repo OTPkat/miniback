@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
-from v1.schemas.jajanken import Duel, Duelist, DuelCreate
-from v1.daos.jajanken import DuelistDao
+from v1.schemas.jajanken import Duel, Duelist, DuelCreate, Match, Player
+from v1.daos.jajanken import DuelistDao, TournamentDao
 from typing import List
 from database import get_db, engine
 from models import Base
@@ -16,6 +16,8 @@ async def startup():
         # await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
+
+############### DUELS ##################
 
 @app.post("/duelists/", response_model=Duelist)
 async def post_duelist(
@@ -63,3 +65,39 @@ async def get_duels(
 ):
     duels = await DuelistDao.get_duels(db=db)
     return duels
+
+
+# Tournament
+
+@app.post("/matches/", response_model=Match)
+async def post_match(
+    match: Match, db: Session = Depends(get_db)
+):
+    match = await TournamentDao.post_match(db=db, match=match)
+    return match
+
+
+@app.post("/players/", response_model=Player)
+async def post_player(
+    player: Player, db: Session = Depends(get_db)
+):
+    player = await TournamentDao.insert_player(db=db, player=player)
+    return player
+
+
+@app.get("/players/", response_model=List[Player])
+async def get_players(
+    db: Session = Depends(get_db)
+):
+    players = await TournamentDao.get_players(db=db)
+    return players
+
+
+@app.get("/player/{discord_user_id}", response_model=Player)
+async def get_duelist(
+    discord_user_id: int, db: Session = Depends(get_db)
+):
+    player = await TournamentDao.get_player(db=db, discord_user_id=discord_user_id)
+    return player
+
+

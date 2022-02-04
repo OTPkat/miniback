@@ -29,3 +29,14 @@ class Duel(Base):
     winner_discord_id = Column(BigInteger, nullable=True)
     is_draw = Column(Boolean, nullable=True)
 
+
+class Player(Base):
+    __tablename__ = "players"
+    discord_user_id = Column(BigInteger, primary_key=True, index=True)
+    name = Column(String)
+    n_win = Column(Integer)
+    n_loss = Column(Integer)
+    n_draw = Column(Integer)
+    n_revision = Column(Integer, nullable=True)
+    get_pinged = Column(Boolean, nullable=True)
+    choices = Column(String, nullable=True)
