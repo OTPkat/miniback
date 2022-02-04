@@ -95,7 +95,7 @@ class TournamentDao:
 
     @staticmethod
     async def insert_player(db: Session, player: Player):
-        player = models.Duelist(**player.dict())
+        player = models.Player(**player.dict())
         db.add(player)
         await db.commit()
         await db.refresh(player)
