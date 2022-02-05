@@ -96,6 +96,20 @@ class TournamentDao:
         players = await db.execute(select(models.Player))
         return players.scalars().all()
 
+    @classmethod
+    async def post_player(cls, db: Session, player: Player):
+        player_ = await cls.get_player(db=db, discord_user_id=player.discord_user_id)
+        if player_:
+            player_update = (
+                update(models.Player).where(models.Player.discord_user_id == player.discord_user_id).values(**player.dict())
+            ).execution_options(synchronize_session="fetch")
+            await db.execute(player_update)
+            await db.commit()
+            return player_
+        else:
+            player = await cls.insert_player(db=db, player=player)
+            return player
+
     @staticmethod
     async def insert_player(db: Session, player: Player):
         player = models.Player(**player.dict())

@@ -89,7 +89,7 @@ async def post_match(
 async def post_player(
     player: Player, db: Session = Depends(get_db)
 ):
-    player = await TournamentDao.insert_player(db=db, player=player)
+    player = await TournamentDao.post_player(db=db, player=player)
     return player
 
 

@@ -28,7 +28,7 @@ try:
     session_local = sessionmaker(bind=engine, class_=AsyncSession,  expire_on_commit=False)
 
 except KeyError as e:
-    sqlalchemy_database_url = "postgresql+asyncpg://localhost/test"
+    sqlalchemy_database_url = "sqlite+aiosqlite:///./test.db"
     engine = create_async_engine(sqlalchemy_database_url, echo=True)
     session_local = sessionmaker(expire_on_commit=False, bind=engine, class_=AsyncSession)
 
