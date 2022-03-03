@@ -60,3 +60,27 @@ class Match(BaseModel):
     player_1_revisions: int
     player_2_revisions: int
     winner_discord_id: Optional[int]
+
+
+class TournamentMatchCreate(BaseModel):
+    discord_user_id: int
+    bracket: int
+    match_id: int
+    get_pinged: Optional[bool] = False
+    choices: Optional[str] = None
+    is_winner: Optional[bool]
+
+
+class TournamentMatch(TournamentMatchCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class TournamentUpdate(BaseModel):
+    discord_user_id: int
+    bracket: int
+    get_pinged: Optional[bool]
+    choices: Optional[str]
+    is_winner: Optional[bool]

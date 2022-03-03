@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from v1.schemas.jajanken import Duelist, DuelCreate, Player, Match
+from v1.schemas.jajanken import Duelist, DuelCreate, Player, Match, TournamentMatch, TournamentUpdate, TournamentMatchCreate
 import models
 from sqlalchemy.future import select
 from sqlalchemy import update
@@ -147,3 +147,42 @@ class TournamentDao:
         await db.commit()
         return match
 
+
+######### FINAL ########
+
+class FinalTournamentDao:
+    @staticmethod
+    async def get_match(db: Session, discord_user_id: int, bracket: int):
+        match = await db.execute(
+            select(models.TournamentMatch).where(
+                models.TournamentMatch.discord_user_id == discord_user_id and models.TournamentMatch.bracket == bracket
+            )
+        )
+        return match.scalars().first()
+
+    @staticmethod
+    async def get_matches(db: Session):
+        matches = await db.execute(select(models.TournamentMatch))
+        return matches.scalars().all()
+
+    @classmethod
+    async def insert_tournament_match(cls, db: Session, match: TournamentMatchCreate):
+        match_ = models.TournamentMatch(**match.dict())
+        db.add(match_)
+        await db.commit()
+        await db.refresh(match_)
+        return match_
+
+    @classmethod
+    async def update(cls, db: Session, match: TournamentUpdate):
+        match_ = await cls.get_match(
+            db=db, discord_user_id=match.discord_user_id, bracket=match.bracket)
+        if match_:
+            match_update = (
+                update(models.TournamentMatch).where(
+                    models.TournamentMatch.discord_user_id == match.discord_user_id and models.TournamentMatch.bracket == match_.bracket
+                ).values(**match.dict())
+            ).execution_options(synchronize_session="fetch")
+            await db.execute(match_update)
+            await db.commit()
+            return match_

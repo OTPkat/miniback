@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
-from v1.schemas.jajanken import Duel, Duelist, DuelCreate, Match, Player
-from v1.daos.jajanken import DuelistDao, TournamentDao
+from v1.schemas.jajanken import Duel, Duelist, DuelCreate, Match, Player, TournamentMatch, TournamentUpdate, TournamentMatchCreate
+from v1.daos.jajanken import DuelistDao, TournamentDao, FinalTournamentDao
 from typing import List
 from database import get_db, engine
 from models import Base
@@ -117,3 +117,27 @@ async def clear_players(
     return 1
 
 
+### TOURNAMENT FINAL
+
+@app.post("/tournamentmatches/", response_model=TournamentMatch)
+async def post_tournament_match(
+    match: TournamentMatchCreate, db: Session = Depends(get_db)
+):
+    match_ = await FinalTournamentDao.insert_tournament_match(db=db, match=match)
+    return match_
+
+
+@app.get("/tournamentmatches/", response_model=List[TournamentMatch])
+async def get_tournament_matches(
+    db: Session = Depends(get_db)
+):
+    matches = await FinalTournamentDao.get_matches(db=db)
+    return matches
+
+
+@app.put("/tournamentmatches/", response_model=TournamentMatch)
+async def post_tournament_match(
+    match_update: TournamentUpdate, db: Session = Depends(get_db)
+):
+    match_ = await FinalTournamentDao.update(db=db, match=match_update)
+    return match_

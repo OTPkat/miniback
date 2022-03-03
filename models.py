@@ -40,3 +40,15 @@ class Player(Base):
     n_revision = Column(Integer, nullable=True)
     get_pinged = Column(Boolean, nullable=True)
     choices = Column(String, nullable=True)
+
+
+class TournamentMatch(Base):
+    __tablename__ = "tournamentmatches"
+    id = Column(Integer, primary_key=True, index=True)
+    discord_user_id = Column(BigInteger)
+    get_pinged = Column(Boolean, nullable=True)
+    choices = Column(String, nullable=True)
+    bracket = Column(Integer)
+    match_id = Column(Integer)
+    is_winner = Column(Boolean, nullable=True)
+
