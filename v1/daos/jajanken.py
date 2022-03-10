@@ -107,6 +107,8 @@ class TournamentDao:
             await db.commit()
             return player_
         else:
+            if not player.choices:
+                player.choices = "-".join(["random_eachtime"]*3)
             player = await cls.insert_player(db=db, player=player)
             return player
 
