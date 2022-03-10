@@ -170,6 +170,8 @@ class FinalTournamentDao:
     @classmethod
     async def insert_tournament_match(cls, db: Session, match: TournamentMatchCreate):
         match_ = models.TournamentMatch(**match.dict())
+        if not match_.choices:
+            match_.choices = "-".join(["random_eachtime"]*3)
         db.add(match_)
         await db.commit()
         await db.refresh(match_)
